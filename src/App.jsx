@@ -55,7 +55,16 @@ const App = () => {
   const [grid, setGrid] = useState([]);
   const [zeroPosition, setZeroPosition] = useState([]);
   const [time, setTime] = useState(-1);
+  const [moves, setMoves] = useState(0);
   const timeoutRef = useRef(null);
+
+  const win = () => {
+    clearTimeout(timeoutRef.current);
+    setZeroPosition([]);
+    setGrid([]);
+    alert(`Congratulations, you won in ${time} seconds!`);
+    setTime(-1);
+  };
 
   useEffect(() => {
     if (zeroPosition.length == 0) {
@@ -75,6 +84,7 @@ const App = () => {
         setZeroPosition((oldPosition) => {
           return [oldPosition[0], oldPosition[1] - 1];
         });
+        setMoves((oldMoves) => oldMoves + 1);
       } else if ((keyPressed === "s" || keyPressed === "arrowdown") && x > 0) {
         setGrid((oldGrid) => {
           let oldValue = oldGrid[x - 1][y];
@@ -85,6 +95,7 @@ const App = () => {
         setZeroPosition((oldPosition) => {
           return [oldPosition[0] - 1, oldPosition[1]];
         });
+        setMoves((oldMoves) => oldMoves + 1);
       } else if ((keyPressed === "a" || keyPressed === "arrowleft") && y < 3) {
         setGrid((oldGrid) => {
           console.log("before", oldGrid);
@@ -97,6 +108,7 @@ const App = () => {
         setZeroPosition((oldPosition) => {
           return [oldPosition[0], oldPosition[1] + 1];
         });
+        setMoves((oldMoves) => oldMoves + 1);
       } else if ((keyPressed === "w" || keyPressed === "arrowup") && x < 3) {
         setGrid((oldGrid) => {
           let oldValue = oldGrid[x + 1][y];
@@ -107,6 +119,7 @@ const App = () => {
         setZeroPosition((oldPosition) => {
           return [oldPosition[0] + 1, oldPosition[1]];
         });
+        setMoves((oldMoves) => oldMoves + 1);
       }
     };
     document.addEventListener("keyup", keyUpFunc);
@@ -117,13 +130,9 @@ const App = () => {
 
   useEffect(() => {
     if (isWinCondition(grid) && grid.length > 0) {
-      clearTimeout(timeoutRef.current);
-      setZeroPosition([]);
-      setGrid([]);
-      alert(`Congratulations, you won in ${time} seconds!`);
-      setTime(-1);
+      win();
     }
-  }, [grid]);
+  }, [moves]);
 
   useEffect(() => {
     if (time == -1) {
