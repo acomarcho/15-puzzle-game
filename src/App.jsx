@@ -126,10 +126,19 @@ const App = () => {
   }, [grid]);
 
   useEffect(() => {
-    if (time < 0) {
+    if (time == -1) {
       return;
     }
-    
+
+    if (time < 0) {
+      setTime(0);
+      return;
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setTime((oldTime) => oldTime + 1);
+    }, 1000);
+
     return () => {
       clearTimeout(timeoutRef.current);
     };
@@ -149,7 +158,7 @@ const App = () => {
       clearTimeout(timeoutRef.current);
     }
 
-    setTime(0);
+    setTime(getRandomInt(-1000, -500));
   };
 
   return (
