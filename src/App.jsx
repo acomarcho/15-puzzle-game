@@ -116,7 +116,7 @@ const App = () => {
   }, [zeroPosition]);
 
   useEffect(() => {
-    if (isWinCondition(grid) && grid.lenght > 0) {
+    if (isWinCondition(grid) && grid.length > 0) {
       clearTimeout(timeoutRef.current);
       setZeroPosition([]);
       setGrid([]);
@@ -129,9 +129,7 @@ const App = () => {
     if (time < 0) {
       return;
     }
-    timeoutRef.current = setTimeout(() => {
-      setTime((oldTime) => oldTime + 1);
-    }, 1000);
+    
     return () => {
       clearTimeout(timeoutRef.current);
     };
@@ -150,6 +148,7 @@ const App = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+
     setTime(0);
   };
 
